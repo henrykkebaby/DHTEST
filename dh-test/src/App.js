@@ -1,23 +1,22 @@
 import logo from './logo.svg';
 import './App.css';
+import Model from "./models/model";
+import HenrikPresenter from "./presenters/henrikPresenter";
+import FilipPresenter from './presenters/filipPresenter';
+import OllePresenter from './presenters/ollePresenter';
+import ShayanPresenter from './presenters/shayanPresenter';
 
 function App() {
+
+  const model = new Model();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-         asfsaffas
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+        
+        <HenrikPresenter model={model} />
+        <FilipPresenter model={model} />
+        <OllePresenter model={model} />
+        <ShayanPresenter model={model} />
     </div>
   );
 }
