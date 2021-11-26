@@ -1,32 +1,30 @@
 class Model{
-    constructor(filip=1){
-          this.filip = filip;
+
+      constructor(observers=[], seconds=0){
+            this.observers=observers;
+            this.setSeconds(seconds);
       }
 
-      addObserver(callback){
-            this.observers = this.observers.concat(callback);
+      setSeconds(seconds) {
+            this.seconds = seconds;
+            this.notifyObservers();
       }
 
-      removeObserver(callback){
-            this.observers = this.observers.filter(x=> x !=callback);
+      addObserver(callback)
+      {
+            this.observers.push(callback);
+      }
 
+      removeObserver(callback)
+      {
+            this.observers = this.observers.filter(ob => callback.toString() !== ob.toString());
       }
       
-      notifyObservers(){
-      console.log("Notify observer called");
-      this.observers.forEach(cb=>{
-            setTimeout(()=> {
-            try{
-                  cb()
-            }
-            catch(error){
-                  Error(error, cb);
-            }
-            },0)
-      })
-      
+      notifyObservers()
+      {
+            this.observers.forEach(cb => cb());
       }
-  
+
 };
 
 export default Model;

@@ -1,14 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Henrik from '../views/henrik';
 
 function HenrikPresenter(props) {
 
-    const [number, setNumber] = useState(0);
+    const [localTime, setLocalTime] = useState(props.model.henrik);
 
-    function increment() { setNumber(number + 1); }
-    function decrement() { setNumber(number - 1); }
+    useEffect(() => {props.model.addObserver(() => setLocalTime(props.model.seconds))}, []);
 
-    return <Henrik hejo={number} dec={decrement} inc={increment} />
+    return <Henrik hejo={localTime} />
 }
 
 export default HenrikPresenter
