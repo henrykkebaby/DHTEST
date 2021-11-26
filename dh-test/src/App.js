@@ -6,6 +6,7 @@ import FilipPresenter from './presenters/filipPresenter';
 import OllePresenter from './presenters/ollePresenter';
 import ShayanPresenter from './presenters/shayanPresenter';
 import Duck from './presenters/duckPresenter';
+import TimerPresenter from './presenters/timerPresenter';
 
 function App() {
 
@@ -13,9 +14,7 @@ function App() {
 
   return (
     <div>
-        
-        <Duck model={model} />
-
+        <TimerPresenter />
     </div>
   );
 }

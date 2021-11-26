@@ -12,33 +12,32 @@ function DuckPresenter(props) {
     const [number, setNumber] = useState(0);
     const [posX, setPosX] = useState(Math.random()*480);
     const [posY, setPosY] = useState(Math.random()*480);
-    const [background, setBackground]= useState(generatePic());
-    
+    const [background, setBackground]= useState(0);
+
+    function generatePos() { setPosX(Math.random()*480); setPosY(Math.random()*480); }
+
+    function generateBackground(){setBackground((background) => {
+      let x = Math.floor(Math.random() * pics.length);
+      while(background===x) x = Math.floor(Math.random() * pics.length);
+      return x; }
+    )}
+
+    function increment(point) { setNumber((number) => number + point); }
+    function decrement(point) { setNumber((number) => number - point); }    
+
+    function foundDuck() { console.log("You found Duck"); increment(1000); generateBackground(); generatePos(); setSeconds(5); }
+    function wrongDuck() { console.log("You didn't find Duck"); decrement(500); }
+
     //Timer
     const [seconds, setSeconds] = useState(5);
     useEffect(() => {
-          setInterval(() => {
-            setSeconds((seconds) => {if(seconds > 0){return seconds - 1}else{return seconds}});
+      interval = null;
+         interval =  setInterval(() => {
+            setSeconds((seconds) => {if(seconds > 0){return seconds - 1}else{generateBackground(); generatePos(); decrement(50); return 5}});
           }, 1000);
-      }, []);
+          return () => clearInterval(interval);
+      }, [seconds, background]);
     //Timer
-    
-
-
-
-    
-    
-   
-
-
-    function generatePic() { return Math.floor(Math.random() * pics.length); }
-    function generatePos() { setPosX(Math.random()*480); setPosY(Math.random()*480); }
-
-    function increment(point) { setNumber(number + point); }
-    function decrement(point) { setNumber(number - point); }    
-
-    function foundDuck() { console.log("You found Duck"); increment(1000); setBackground(generatePic()); generatePos(); }
-    function wrongDuck() { console.log("You didn't find Duck"); decrement(500); }
 
     return <Duck 
         ducks={number} 
