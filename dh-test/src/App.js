@@ -5,6 +5,7 @@ import HenrikPresenter from "./presenters/henrikPresenter";
 import FilipPresenter from './presenters/filipPresenter';
 import OllePresenter from './presenters/ollePresenter';
 import ShayanPresenter from './presenters/shayanPresenter';
+import Duck from './presenters/duckPresenter';
 
 function App() {
 
@@ -13,10 +14,8 @@ function App() {
   return (
     <div>
         
-        <HenrikPresenter model={model} />
-        <FilipPresenter model={model} />
-        <OllePresenter model={model} />
-        <ShayanPresenter model={model} />
+        <Duck model={model} />
+
     </div>
   );
 }
