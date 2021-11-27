@@ -25,18 +25,16 @@ function DuckPresenter(props) {
     function increment(point) { setNumber((number) => number + point); }
     function decrement(point) { setNumber((number) => number - point); }    
 
-    function foundDuck() { console.log("You found Duck"); increment(1000); generateBackground(); generatePos(); setSeconds(5); }
+    function foundDuck() { console.log("You found Duck"); increment(1000); generateBackground(); generatePos(); setSeconds(30); }
     function wrongDuck() { console.log("You didn't find Duck"); decrement(500); }
 
     //Timer
-    const [seconds, setSeconds] = useState(5);
+    const [seconds, setSeconds] = useState(30);
     useEffect(() => {
-      interval = null;
-         interval =  setInterval(() => {
-            setSeconds((seconds) => {if(seconds > 0){return seconds - 1}else{generateBackground(); generatePos(); decrement(50); return 5}});
+         setInterval(() => {
+            setSeconds((seconds) => {if(seconds > 0){return seconds - 1}else{generateBackground(); generatePos(); decrement(50); return 30}});
           }, 1000);
-          return () => clearInterval(interval);
-      }, [seconds, background]);
+      }, []);
     //Timer
 
     return <Duck 
