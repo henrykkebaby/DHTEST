@@ -5,6 +5,8 @@ import duckPic from '../localfiles/duck.png';
 import backgroundPic1 from '../localfiles/background1.jpg';
 import backgroundPic2 from '../localfiles/background2.jpg';
 import backgroundPic3 from '../localfiles/background3.jpg';
+import {signOut} from "firebase/auth";
+import { auth } from "../firebase/firebase-config";
 
 function GamePresenter(props) {
 
@@ -29,6 +31,10 @@ function GamePresenter(props) {
     function foundDuck() { console.log("You found Duck"); increment(1000); generateBackground(); generatePos(); setSeconds(30); }
     function wrongDuck() { console.log("You didn't find Duck"); decrement(500); }
 
+    async function logout(){
+      await signOut(auth);
+    }
+
     //Timer
     const [seconds, setSeconds] = useState(30);
     useEffect(() => {
@@ -49,6 +55,7 @@ function GamePresenter(props) {
         duckPic={duckPic} 
         posX={posX + "px"}
         posY={posY + "px"}
+        logout = {logout}
         
     />
       <TimerView
