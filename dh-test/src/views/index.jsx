@@ -5,7 +5,7 @@ function Index(props) {
   return (
     <div>
         <p>Press Button to goto Duck game</p>
-        <Link to="/duck">
+        <Link to="/game">
             <button>
                 LOG IN
             </button>

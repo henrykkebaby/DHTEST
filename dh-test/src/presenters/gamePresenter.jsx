@@ -1,11 +1,12 @@
 import React, {useState, useEffect } from 'react';
-import Duck from '../views/duck';
+import GameView from '../views/gameView';
+import TimerView from '../views/timerView'
 import duckPic from '../localfiles/duck.png';
 import backgroundPic1 from '../localfiles/background1.jpg';
 import backgroundPic2 from '../localfiles/background2.jpg';
 import backgroundPic3 from '../localfiles/background3.jpg';
 
-function DuckPresenter(props) {
+function GamePresenter(props) {
 
     const pics = [backgroundPic1, backgroundPic2, backgroundPic3];
 
@@ -37,7 +38,8 @@ function DuckPresenter(props) {
       }, []);
     //Timer
 
-    return <Duck 
+    return <div>
+      <GameView 
         ducks={number} 
         dec={decrement} 
         inc={increment}
@@ -47,8 +49,12 @@ function DuckPresenter(props) {
         duckPic={duckPic} 
         posX={posX + "px"}
         posY={posY + "px"}
-        seconds = {seconds}
+        
     />
+      <TimerView
+        seconds = {seconds}
+      />
+    </div>
 }
 
-export default DuckPresenter
+export default GamePresenter

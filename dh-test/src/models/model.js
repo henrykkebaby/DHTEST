@@ -1,6 +1,7 @@
 class Model{
-    constructor(filip=1){
-          this.filip = filip;
+
+      constructor(highScore=[]){
+            this.highScore = highScore;
       }
 
       addObserver(callback){
@@ -16,12 +17,12 @@ class Model{
       console.log("Notify observer called");
       this.observers.forEach(cb=>{
             setTimeout(()=> {
-            try{
-                  cb()
-            }
-            catch(error){
-                  Error(error, cb);
-            }
+                  try{
+                        cb()
+                  }
+                  catch(error){
+                        Error(error, cb);
+                  }
             },0)
       })
       
