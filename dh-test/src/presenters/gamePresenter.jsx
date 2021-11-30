@@ -11,8 +11,6 @@ import GameSource from "../gameSource"
 
 function GamePresenter(props) {
 
-    
-
     const pics = [backgroundPic1, backgroundPic2, backgroundPic3];
 
     const [highscore, setHighscore] = useState(props.model.highscore);
@@ -20,15 +18,14 @@ function GamePresenter(props) {
     const [number, setNumber] = useState(0);
     const [posX, setPosX] = useState(Math.random()*480);
     const [posY, setPosY] = useState(Math.random()*480);
-    const [background, setBackground]= useState(Math.floor(Math.random() * pics.length));
+    const [background, setBackground]= useState(Math.floor(Math.random() * 10));
     const [testImg, setTestImg] = useState(null);
+    const [imgResults, setImgResults] = useState(null);
 
-    useEffect(() => { props.model.addObserver(() => {setHighscore(props.model.highscore); console.log("highscore " + props.model.highscore); });
-      GameSource.searchDishes().then(data=>{setTestImg(data[0].contentUrl)});}, []);
-    
-
-    
-
+    useEffect(() => { 
+      props.model.addObserver(() => {setHighscore(props.model.highscore); console.log("highscore " + props.model.highscore); });
+      GameSource.searchImages("wheres waldo").then(data=>{setImgResults(data); setTestImg(data[background].contentUrl)});
+    }, []);
 
     function generatePos() { setPosX(Math.random()*480); setPosY(Math.random()*480); }
 
@@ -38,10 +35,12 @@ function GamePresenter(props) {
       }
 
       setBackground((background) => {
-      let x = Math.floor(Math.random() * pics.length);
-      while(background===x) x = Math.floor(Math.random() * pics.length);
-      return x; }
-    )}
+      let x = Math.floor(Math.random() * 10);
+      while(background===x) x = Math.floor(Math.random() * 10);
+      return x; })
+      
+      setTestImg(imgResults[background].contentUrl);
+    }
 
     async function logout(){
       await signOut(auth);
@@ -84,12 +83,11 @@ function GamePresenter(props) {
         inc={increment}
         foundDuck={foundDuck}
         wrongDuck={wrongDuck}
-        backgroundPic={pics[background]}
+        backgroundPic={testImg}
         duckPic={duckPic} 
         posX={posX + "px"}
         posY={posY + "px"}
         logout = {logout}
-        testImg = {testImg}
         
     />
       <TimerView

@@ -20,13 +20,10 @@ const  GameSource={   // JS object creation literal
     .then(response => response.json());
     }
     ,   // comma between object entries
-    searchDishes(){ 
-        
-        return GameSource.apiCall("search?q=where%20is%20waldo")
+    searchImages(searchq){
+        return GameSource.apiCall("search?q="+searchq.replaceAll(' ', '%20'))
         .then(data=> data.value)
     }
-    ,   
-    getDishDetails(id){ return GameSource.apiCall("/recipes/"+id+"/information"); }
  };
  
  export default GameSource;

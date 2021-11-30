@@ -18,9 +18,6 @@ function GameView(props) {
             </button>
         </Link>
 
-        <img style={{position:"absolute", top:"700px", userSelect:"none"}} height="500px" width="500px" src = {props.testImg}/>
-
-
     </div>
     
   );
