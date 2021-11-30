@@ -13,7 +13,7 @@ function GameView(props) {
         
 
         <Link to="/" style={{position:"absolute", top:"600px"}}>
-            <button>
+            <button onClick = {props.logout}>
                 LOG OUT
             </button>
         </Link>

@@ -5,6 +5,8 @@ import duckPic from '../localfiles/duck.png';
 import backgroundPic1 from '../localfiles/background1.jpg';
 import backgroundPic2 from '../localfiles/background2.jpg';
 import backgroundPic3 from '../localfiles/background3.jpg';
+import {signOut} from "firebase/auth";
+import { auth } from "../firebase/firebase-config";
 
 function GamePresenter(props) {
 
@@ -31,6 +33,10 @@ function GamePresenter(props) {
       while(background===x) x = Math.floor(Math.random() * pics.length);
       return x; }
     )}
+
+    async function logout(){
+      await signOut(auth);
+    }
 
     //Timer
     const [seconds, setSeconds] = useState(30);
@@ -73,7 +79,9 @@ function GamePresenter(props) {
         duckPic={duckPic} 
         posX={posX + "px"}
         posY={posY + "px"}
-      />
+        logout = {logout}
+        
+    />
       <TimerView
         seconds = {seconds}
       />
