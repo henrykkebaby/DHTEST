@@ -12,14 +12,17 @@ function IndexPresenter(props) {
  
  const [nextPage, setNextPage] = useState(false);
  const [user, setUser] = useState({});
- 
+ const [errorMessage, setErrorMessage] = useState("");
+
 
  onAuthStateChanged(auth, (currentUser) =>{
    setUser(currentUser)
  })
 
   async function register(){
-  
+   if(errorMessage !== ""){
+     setErrorMessage("");
+   }
     
     try{
       const user =  await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
@@ -28,6 +31,10 @@ function IndexPresenter(props) {
 
     catch(error){
       console.log(error.message)
+      if(error.message = "auth/weak-password")  setErrorMessage("Password should atleast be 6 characters long");
+      else if(error.message = "auth/email-already-in-use")  setErrorMessage("Email already in use");
+     
+      
     }
   
   }
@@ -54,6 +61,8 @@ function IndexPresenter(props) {
     setNextPage(true)
   }
 
+  
+
     
     
 return <Index 
@@ -74,7 +83,9 @@ register = {register}
 login = {login}
 logout = {logout}
 nextPageHandler = {nextPageHandler}
-onAuthStateChanged = {onAuthStateChanged}
+errorMessage = {errorMessage}
+setErrorMessage = {setErrorMessage}
+
 
 
 />
