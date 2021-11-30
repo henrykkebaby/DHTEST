@@ -5,7 +5,6 @@ import "../index.css"
 function Index(props) {
   return (
     <div>
-<<<<<<< Updated upstream
        <div>
          <h3>Register User</h3>
          <input type = "text" placeholder = "Email..." onChange={(e) => {props.setRegisterEmail(e.target.value)}}/>
@@ -38,16 +37,6 @@ function Index(props) {
    
      
      
-=======
-        <p>Press Button to goto Duck game</p>
-        
-        <Link to="/duck" >
-          <button>
-            LOG IN
-          </button>
-        </Link>
-
->>>>>>> Stashed changes
     </div>
   )
 }
