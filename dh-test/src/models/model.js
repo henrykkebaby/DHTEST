@@ -1,31 +1,28 @@
 class Model{
 
-      constructor(highScore=[]){
-            this.highScore = highScore;
+      constructor(observers=[], highscore=[1, 2, 3]){
+            this.observers = observers;
+            this.highscore = highscore;
       }
 
-      addObserver(callback){
-            this.observers = this.observers.concat(callback);
+      addHighscore(score) {
+            this.highscore.push(score);
+            this.notifyObservers();
       }
 
-      removeObserver(callback){
-            this.observers = this.observers.filter(x=> x !=callback);
+      addObserver(callback)
+      {
+            this.observers.push(callback);
+      }
 
+      removeObserver(callback)
+      {
+            this.observers = this.observers.filter(ob => callback.toString() !== ob.toString());
       }
       
-      notifyObservers(){
-      console.log("Notify observer called");
-      this.observers.forEach(cb=>{
-            setTimeout(()=> {
-                  try{
-                        cb()
-                  }
-                  catch(error){
-                        Error(error, cb);
-                  }
-            },0)
-      })
-      
+      notifyObservers()
+      {
+            this.observers.forEach(cb => cb());
       }
   
 };
