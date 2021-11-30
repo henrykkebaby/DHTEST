@@ -7,8 +7,11 @@ import backgroundPic2 from '../localfiles/background2.jpg';
 import backgroundPic3 from '../localfiles/background3.jpg';
 import {signOut} from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
+import GameSource from "../gameSource"
 
 function GamePresenter(props) {
+
+    
 
     const pics = [backgroundPic1, backgroundPic2, backgroundPic3];
 
@@ -18,8 +21,14 @@ function GamePresenter(props) {
     const [posX, setPosX] = useState(Math.random()*480);
     const [posY, setPosY] = useState(Math.random()*480);
     const [background, setBackground]= useState(Math.floor(Math.random() * pics.length));
+    const [testImg, setTestImg] = useState(null);
 
-    useEffect(() => { props.model.addObserver(() => {setHighscore(props.model.highscore); console.log("highscore " + props.model.highscore);})}, []);
+    useEffect(() => { props.model.addObserver(() => {setHighscore(props.model.highscore); console.log("highscore " + props.model.highscore); });
+      GameSource.searchDishes().then(data=>{setTestImg(data[0].contentUrl)});}, []);
+    
+
+    
+
 
     function generatePos() { setPosX(Math.random()*480); setPosY(Math.random()*480); }
 
@@ -80,6 +89,7 @@ function GamePresenter(props) {
         posX={posX + "px"}
         posY={posY + "px"}
         logout = {logout}
+        testImg = {testImg}
         
     />
       <TimerView
