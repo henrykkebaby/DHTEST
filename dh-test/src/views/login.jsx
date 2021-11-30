@@ -11,7 +11,7 @@ function Login(props) {
 
           <button onClick = {props.login}>Login</button>
           </div>
-      
+            
         </div>
     )
 }

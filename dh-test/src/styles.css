@@ -55,6 +55,7 @@ h1{color:#1a67ab}
   }
   .mainPageContainer button:hover{
     background-color: rgb(202, 202, 12);
+    cursor: pointer;
   }
 /*-------------------------------------------------------------- LoginContainer --------------------------*/
 
@@ -97,7 +98,7 @@ color:white;
 }
 .loginContainer h1{color:white;}
 .loginContainer button:hover{
-  background-color: white;
+  background-color: rgb(202, 202, 12);
   cursor: pointer;
 }
 /*-------------------------------------------------------------- RegisterContainer --------------------------*/
@@ -133,6 +134,6 @@ color:white;
 }
 .registerContainer h1{color:white;}
 .registerContainer button:hover{
-background-color: white;
+background-color: rgb(202, 202, 12);
 cursor: pointer;
 }
