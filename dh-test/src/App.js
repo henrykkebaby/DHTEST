@@ -13,8 +13,14 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Index model={model} />} />
+<<<<<<< Updated upstream
       <Route path="/game" element={<Game model={model} />} />
     </Routes>
+=======
+      <Route path="/duck" element={<Duck model={model} />} />
+    </Routes>
+
+>>>>>>> Stashed changes
   );
 }
 
