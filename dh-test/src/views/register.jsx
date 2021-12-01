@@ -6,10 +6,10 @@ function Register(props) {
         
         <div className = "fieldBox">
        <h1>Register</h1>
-       <input type = "text" placeholder="Email..." onChange={(e) => {props.setLoginEmail(e.target.value)}}/>
-       <input  type = "password" placeholder="Password..." onChange={(e) => {props.setLoginPassword(e.target.value)}}/>
+       <input type = "text" placeholder="Email..." onChange={(e) => {props.setRegisterEmail(e.target.value)}}/>
+       <input  type = "password" placeholder="Password..." onChange={(e) => {props.setRegisterPassword(e.target.value)}}/>
 
-       <button onClick = {props.login}>Signup</button>
+       <button onClick = {props.register}>Signup</button>
        </div>
    
      </div>
