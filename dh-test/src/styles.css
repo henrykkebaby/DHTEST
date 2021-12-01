@@ -137,3 +137,9 @@ color:white;
 background-color: rgb(202, 202, 12);
 cursor: pointer;
 }
+
+
+.test{
+  display: flex;
+  flex-direction: row;
+}
