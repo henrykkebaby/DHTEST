@@ -23,7 +23,7 @@ function GamePresenter(props) {
     const [imgResults, setImgResults] = useState(null);
 
     useEffect(() => { 
-      props.model.addObserver(() => {setHighscore(props.model.highscore); console.log("highscore " + props.model.highscore); });
+      props.model.addObserver(() => {setHighscore(props.model.highscore); console.log("HIGHSCORE " + props.model.highscore); });
       GameSource.searchImages("wheres waldo").then(data=>{setImgResults(data); setTestImg(data[background].contentUrl)});
     }, []);
 
