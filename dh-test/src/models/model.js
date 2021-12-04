@@ -1,6 +1,6 @@
 class Model{
 
-      constructor(observers=[], highscore=[1, 2, 3]){
+      constructor(observers=[], highscore=[]){
             this.observers = observers;
             this.highscore = highscore;
       }

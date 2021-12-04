@@ -1,99 +1,105 @@
 import React, {useState, useEffect } from 'react';
 import GameView from '../views/gameView';
-import TimerView from '../views/timerView'
-import duckPic from '../localfiles/duck.png';
+import TimerView from '../views/timerView';
+import GameSource from "../gameSource";
 import backgroundPic1 from '../localfiles/background1.jpg';
 import backgroundPic2 from '../localfiles/background2.jpg';
 import backgroundPic3 from '../localfiles/background3.jpg';
+import duckPic from '../localfiles/duck.png';
+
+//Firebase
 import {signOut} from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
-import GameSource from "../gameSource"
 
 function GamePresenter(props) {
+  
+  //locals
+  
+  //height, width, BackgroundNumber, backgroundPic, localImgResults, 
+  let localBackground = [500, 500, Math.floor(Math.random() * 35)]; //change later to length of data
+  //let localImgResults = [backgroundPic1, backgroundPic2, backgroundPic3];
+  let localDuckPos = [Math.random()*480, Math.random()*480];
 
-    const pics = [backgroundPic1, backgroundPic2, backgroundPic3];
 
-    const [highscore, setHighscore] = useState(props.model.highscore);
-    const [round, setRound] = useState(1);
-    const [number, setNumber] = useState(0);
-    const [posX, setPosX] = useState(Math.random()*480);
-    const [posY, setPosY] = useState(Math.random()*480);
-    const [background, setBackground]= useState(Math.floor(Math.random() * 10));
-    const [testImg, setTestImg] = useState(null);
-    const [imgResults, setImgResults] = useState(null);
+  //hooks
 
-    useEffect(() => { 
-      props.model.addObserver(() => {setHighscore(props.model.highscore); console.log("HIGHSCORE " + props.model.highscore); });
-      GameSource.searchImages("wheres waldo").then(data=>{setImgResults(data); setTestImg(data[background].contentUrl)});
-    }, []);
+  const [duckPosX, setDuckPosX] = useState(localDuckPos[0]);
+  const [duckPosY, setDuckPosY] = useState(localDuckPos[1]);
 
-    function generatePos() { setPosX(Math.random()*480); setPosY(Math.random()*480); }
+  const [round, setRound] = useState(1);
+  const [score, setScore] = useState(0);
+  const [highscore, setHighscore] = useState(props.model.highscore);
 
-    function generateBackground(){
-      if(round >= 4) {
-        props.model.addHighscore(number);
-      }
+  const [searchResults, setSearchResults] = useState(null);
 
-      setBackground((background) => {
-      let x = Math.floor(Math.random() * 10);
-      while(background===x) x = Math.floor(Math.random() * 10);
-      return x; })
-      
-      setTestImg(imgResults[background].contentUrl);
-    }
+  const [width, setWidth] = useState(localBackground[1]);
+  const [height, setHeight] = useState(localBackground[0]);
+  const [background, setBackground] = useState(null);
 
-    async function logout(){
-      await signOut(auth);
-    }
+  //useEffect
+  useEffect(() => {
+    console.log("DuckPresenter Ready!");
+    props.model.addObserver(() => { setHighscore(props.model.highscore); });
+    GameSource.searchImages("google images").then((data)=>{setSearchResults(data); setBackground(data[0].contentUrl); } );
+  }, []);
 
-    //Timer
-    const [seconds, setSeconds] = useState(30);
+  // flags[0] = boolean trigger rerender
+  function rerender(points, flags) {
+    if(flags[0]){
 
-    useEffect(() => {
-          setInterval(() => {
-            setSeconds((seconds) => seconds - 1);
-          }, 1000);
-      }, []);
-    //Timer
+      setDuckPosX(localDuckPos[0]);
+      setDuckPosY(localDuckPos[1]);
+      setBackground(searchResults[localBackground[2]].contentUrl);
+      setSeconds(30);
 
-    useEffect(() => {
-      if(round === 1) {return}; generateBackground(); generatePos(); setSeconds(30); console.log("hej"); if(round >= 4) { setRound(1); setNumber(0); };
-    }, [round]);
-
-    useEffect(() => {
-      if(seconds < 0)
+      if(round >= 3)
       {
-        decrement(1337);
-        setRound(round + 1);
-      }
-    }, [seconds]);
+        props.model.addHighscore(score + points);
+        setRound(1);
+        setScore(0);
+        return;
 
-    function increment(point) { setNumber(number + point); }
-    function decrement(point) { setNumber(number - point); }    
+      } else { setRound(round + 1); }
 
-    function foundDuck() { console.log("You found Duck"); increment(1000); setRound(round + 1); }
-    function wrongDuck() { console.log("You didn't find Duck"); decrement(500);  }
+    }
+    setScore(score + points);
+  }
 
-    return <div>
+  const [seconds, setSeconds] = useState(30);
+  useEffect(() => {
+    let interval = null;
+    interval = setInterval(() => {
+      if(seconds <= 0){rerender(-500, [true]); setSeconds(30); }
+      else{rerender(-5, [false]); setSeconds(seconds => seconds - 1); }     
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [seconds, score]);
+
+  async function logout(){
+    await signOut(auth);
+  }
+
+  return <div>
       <GameView 
-        ducks={number}
+        score={score}
         round={round}
         highscore={highscore}
-        dec={decrement} 
-        inc={increment}
-        foundDuck={foundDuck}
-        wrongDuck={wrongDuck}
-        backgroundPic={testImg}
+        dec={() => console.log("dec")} 
+        inc={() => console.log("inc")}
+        foundDuck={rerender}
+        missedDuck={rerender}
+        background={background}
         duckPic={duckPic} 
-        posX={posX + "px"}
-        posY={posY + "px"}
+        posX={duckPosX + "px"}
+        posY={duckPosY + "px"}
+        height={500 + "px"}
+        width={500 + "px"}
         logout = {logout}
-        
     />
-      <TimerView
+    <TimerView
         seconds = {seconds}
       />
-    </div>
+  </div>
 }
 
 export default GamePresenter
