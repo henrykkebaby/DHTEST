@@ -4,6 +4,7 @@ import {getAuth} from "firebase/auth"
 const firebaseConfig = {
     apiKey: "AIzaSyBr3NSAhHX694QYDq0EBUkrybNOnLYZRcI",
     authDomain: "authentication-tutorial-2f952.firebaseapp.com",
+    databaseURL: "https://authentication-tutorial-2f952-default-rtdb.europe-west1.firebasedatabase.app/",
     projectId: "authentication-tutorial-2f952",
     storageBucket: "authentication-tutorial-2f952.appspot.com",
     messagingSenderId: "1080942579320",
