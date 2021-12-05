@@ -32,7 +32,7 @@ function GamePresenter(props) {
 
   const [round, setRound] = useState(1);
   const [score, setScore] = useState(0);
-  const [highscore, setHighscore] = useState(props.model.highscore);
+  const [highscore, setHighscore] = useState([]);
 
   const [searchResults, setSearchResults] = useState(null);
 
@@ -48,7 +48,7 @@ function GamePresenter(props) {
   useEffect(() => {
     console.log("DuckPresenter Ready!");
     GetData();
-    props.model.addObserver(() => { setHighscore(props.model.highscore); });
+    //props.model.addObserver(() => { setHighscore(props.model.highscore); });
     GameSource.searchImages("ducks").then((data)=>{setSearchResults(data); setBackground(data[0].contentUrl); } );
   }, []);
 
@@ -63,8 +63,8 @@ function GamePresenter(props) {
 
       if(round >= 3)
       {
-        props.model.addHighscore(score + points);
-        SetData();
+        //props.model.addHighscore(score + points);
+        SetData(score + points);
         setRound(1);
         setScore(0);
         return;
@@ -88,8 +88,9 @@ function GamePresenter(props) {
   //TIMER -----------------------------------------
 
   function compareScore(a,b){
-    if(a.score < b.score) {return -1;}
-    if(a.score > b.score) {return 1;}
+    if(a.score < b.score) {return 1;}
+    if(a.score > b.score) {return -1;}
+    return 0;
   }
 
   //firebase --------------------------------------
@@ -106,29 +107,25 @@ function GamePresenter(props) {
     let highscore_list = [];
     if(scoreList.length < 10) { highscore_length = scoreList.length; }
 
-    [scoreList.sort(compareScore).map(function(item) {
-      highscore_list.push(item);
-      highscore_list -= 1;
+    scoreList.sort(compareScore).map(function(item) {
+      highscore_list.push([item.person, item.score]);
+      highscore_length = highscore_length - 1;
       if(highscore_list <= 0) { return; }
     });
 
-    console.log(highscore_list);
+    setHighscore(highscore_list);
   }
-
-  const SetData = async ()=>{
+  
+  const SetData = async (newScore) =>{
     const person = auth.currentUser.email;
     const personString = String(person);
-    const score = Math.floor(Math.random() * 3000);
+    const score = newScore;
     //console.log("Set data is trying to set the score: " + score);
     await setDoc(doc(db, "scores", personString), { 
       score: score,
       person: person,
-    })
+    }).then(() => GetData());
   }
-
- 
- 
- 
   //firebase --------------------------------------
 
 
