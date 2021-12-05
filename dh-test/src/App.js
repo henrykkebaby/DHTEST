@@ -10,13 +10,36 @@ import LoginPresenter from "./presenters/loginPresenter"
 import { Routes, Route } from 'react-router-dom';
 import NavbarPresenter from './presenters/navbarPresenter';
 import RegisterPresenter from "./presenters/registerPresenter";
+import { collection, getDocs, doc, setDoc} from "firebase/firestore/lite"
+
+import {db} from "./firebase/firebase-config";
+
+
 
 function App() {
 
+  const GetData = async ()=>{
+    const citiesCol = collection(db, 'cities');
+    const citySnapshot = await getDocs(citiesCol);
+    const cityList = citySnapshot.docs.map(doc=>doc.data());
+    console.log(cityList[0].city_name);
+    console.log(cityList[1].city_name);
+  }
+
+  const SetData = async ()=>{
+    const city ="prestoria";
+
+    await setDoc(doc(db, "cities", "LA"), {
+      city_name: city,
+    })
+  }
+  
   const model = new Model();
 
   return (
-    <Routes>
+   
+    
+   <Routes>
       <Route path="/" element={<div>
         <NavbarPresenter model={model} />
         <MainPagePresenter model={model}/>
@@ -30,10 +53,9 @@ function App() {
         <NavbarPresenter model={model} />
         <RegisterPresenter model = {model}/>
         </div>}/>
-     {/*  <Route path="login" element={<Login model={model} />} />
-      <Route path="register" element={<Register model={model} />} />   */}
+     
       <Route path="/game" element={<Game model={model} />} />
-    </Routes>
+    </Routes>   
   );
 }
 

@@ -1,7 +1,7 @@
 import React, {useState, useEffect } from 'react';
 import Index from '../views/index';
-import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth"
-import { auth } from "../firebase/firebase-config"
+import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth";
+import { auth } from "../firebase/firebase-config";
 
 function IndexPresenter(props) {
 

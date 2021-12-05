@@ -1,11 +1,10 @@
-import React,{useState} from 'react'
+import React,{useState} from 'react';
 
-import Login from "../views/login"
-import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth"
-import { auth } from "../firebase/firebase-config"
+import Login from "../views/login";
+import {createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword} from "firebase/auth";
+import { auth } from "../firebase/firebase-config";
+
 function LoginPresenter(props) {
-  
-   
 
  const [loginEmail, setLoginEmail] = useState("")
  const [loginPassword, setLoginPassword] = useState("")

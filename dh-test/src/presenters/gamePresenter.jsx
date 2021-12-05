@@ -10,9 +10,13 @@ import duckPic from '../localfiles/duck.png';
 //Firebase
 import {signOut} from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
+import { collection, getDocs, doc, setDoc } from "firebase/firestore/lite";
+import { db } from "../firebase/firebase-config";
+import { onAuthStateChanged} from "firebase/auth"
+
 
 function GamePresenter(props) {
-  
+
   //locals
   
   //height, width, BackgroundNumber, backgroundPic, localImgResults, 
@@ -36,11 +40,16 @@ function GamePresenter(props) {
   const [height, setHeight] = useState(localBackground[0]);
   const [background, setBackground] = useState(null);
 
+  //firebase hooks
+  const [user, setUser] = useState({});
+
+
   //useEffect
   useEffect(() => {
     console.log("DuckPresenter Ready!");
+    GetData();
     props.model.addObserver(() => { setHighscore(props.model.highscore); });
-    GameSource.searchImages("google images").then((data)=>{setSearchResults(data); setBackground(data[0].contentUrl); } );
+    GameSource.searchImages("ducks").then((data)=>{setSearchResults(data); setBackground(data[0].contentUrl); } );
   }, []);
 
   // flags[0] = boolean trigger rerender
@@ -55,6 +64,7 @@ function GamePresenter(props) {
       if(round >= 3)
       {
         props.model.addHighscore(score + points);
+        SetData();
         setRound(1);
         setScore(0);
         return;
@@ -65,6 +75,7 @@ function GamePresenter(props) {
     setScore(score + points);
   }
 
+  //TIMER -----------------------------------------
   const [seconds, setSeconds] = useState(30);
   useEffect(() => {
     let interval = null;
@@ -74,18 +85,58 @@ function GamePresenter(props) {
     }, 1000);
     return () => clearInterval(interval);
   }, [seconds, score]);
+  //TIMER -----------------------------------------
 
-  async function logout(){
-    await signOut(auth);
+  function compareScore(a,b){
+    if(a.score < b.score) {return -1;}
+    if(a.score > b.score) {return 1;}
   }
+
+  //firebase --------------------------------------
+  onAuthStateChanged(auth, (currentUser) =>{ setUser(currentUser) })
+
+  async function logout() { await signOut(auth); }
+
+  const GetData = async ()=>{
+    const scoreCol = collection(db, "scores");
+    const scoreSnapshot = await getDocs(scoreCol);
+    const scoreList = scoreSnapshot.docs.map(doc=>doc.data());
+    
+    let highscore_length = 10;
+    let highscore_list = [];
+    if(scoreList.length < 10) { highscore_length = scoreList.length; }
+
+    [scoreList.sort(compareScore).map(function(item) {
+      highscore_list.push(item);
+      highscore_list -= 1;
+      if(highscore_list <= 0) { return; }
+    });
+
+    console.log(highscore_list);
+  }
+
+  const SetData = async ()=>{
+    const person = auth.currentUser.email;
+    const personString = String(person);
+    const score = Math.floor(Math.random() * 3000);
+    //console.log("Set data is trying to set the score: " + score);
+    await setDoc(doc(db, "scores", personString), { 
+      score: score,
+      person: person,
+    })
+  }
+
+ 
+ 
+ 
+  //firebase --------------------------------------
+
 
   return <div>
       <GameView 
         score={score}
         round={round}
         highscore={highscore}
-        dec={() => console.log("dec")} 
-        inc={() => console.log("inc")}
         foundDuck={rerender}
         missedDuck={rerender}
         background={background}
